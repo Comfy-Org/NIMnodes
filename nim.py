@@ -21,6 +21,10 @@ class ModelType(Enum):
     FLUX_CANNY = "FLUX_CANNY"
     FLUX_DEPTH = "FLUX_DEPTH"
     FLUX_SCHNELL = "FLUX_SCHNELL"
+    FLUX_KONTEXT = "FLUX_KONTEXT"
+    SD35L_BASE = "SD35L_BASE"
+    SD35L_CANNY = "SD35L_CANNY"
+    SD35L_DEPTH = "SD35L_DEPTH"
 
 
 class OffloadingPolicy(Enum):
@@ -44,6 +48,10 @@ class NIMManager:
         ModelType.FLUX_CANNY: "nvcr.io/nim/black-forest-labs/flux.1-dev:1.1.0",
         ModelType.FLUX_DEPTH: "nvcr.io/nim/black-forest-labs/flux.1-dev:1.1.0",
         ModelType.FLUX_SCHNELL: "nvcr.io/nim/black-forest-labs/flux.1-schnell:1.0.0",
+        ModelType.FLUX_KONTEXT: "nvcr.io/nim/black-forest-labs/flux.1-kontext-dev:1.0.0",
+        ModelType.SD35L_BASE: "nvcr.io/nim/stabilityai/stable-diffusion-3.5-large:1.0.0",
+        ModelType.SD35L_CANNY: "nvcr.io/nim/stabilityai/stable-diffusion-3.5-large:1.0.0",
+        ModelType.SD35L_DEPTH: "nvcr.io/nim/stabilityai/stable-diffusion-3.5-large:1.0.0",
     }
     PORT = 5000
 
@@ -81,6 +89,34 @@ class NIMManager:
                 return True
         return False
 
+    def check_folder_in_wsl(self, folder_path):
+        """
+        Checks if a folder exists in a specified WSL distribution.
+
+        Args:
+            distro_name (str): The name of the WSL distribution.
+            folder_path (str): The absolute path to the folder within the distro.
+
+        Returns:
+            bool: True if the folder exists, False otherwise.
+        """
+        try:
+            # The 'test -d' command returns a 0 exit code for success (folder exists)
+            # and a non-zero exit code for failure (folder doesn't exist).
+            result = subprocess.run(
+                ["wsl.exe", "-d", "NVIDIA-Workbench", "test", "-d", folder_path],
+                check=True,  # This will raise an exception if the command fails
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+            return True
+        except subprocess.CalledProcessError:
+            # A non-zero return code means the folder doesn't exist.
+            return False
+        except FileNotFoundError:
+            print("Error: wsl.exe not found. Please ensure it's in your system PATH.")
+            return False
 
     def _get_cache_path(self, wsl_path=True) -> str:
         home = Path.home()
@@ -95,6 +131,7 @@ class NIMManager:
 
     def _run_cmd(self, cmd: str, err_msg: str = "Unknown") -> List[str]:
         cmd = self.cmd_prefix + cmd
+        print(f'The command from _run_cmd: {cmd}')
         result = subprocess.run(cmd, shell=True, capture_output=True, check=True)
 
         if result.returncode != 0:
@@ -109,6 +146,7 @@ class NIMManager:
 
     def _run_proc(self, cmd: str):
         cmd = self.cmd_prefix + cmd
+        print(f'The command from run_Proc: {cmd}')
         run_process = subprocess.Popen(
             cmd,
             stdin=subprocess.PIPE,
@@ -126,7 +164,12 @@ class NIMManager:
         """Create necessary directories for NIM cache"""
         cache_path = self.cache_path.format(model_name=model_name.value)
 
-        native_path = self._get_cache_path(wsl_path=False).format(model_name=model_name.value)    
+        native_path = self._get_cache_path(wsl_path=False).format(model_name=model_name.value)
+
+        if not self.check_folder_in_wsl('~/.cache/nim'):
+            self._run_cmd('mkdir -p ~/.cache/nim')
+            self._run_cmd('chmod 777 -R ~/.cache/nim')
+
         if os.path.exists(native_path):
             return
         os.makedirs(native_path, exist_ok=True)    
@@ -193,6 +236,10 @@ class NIMManager:
         elif model_name.value.endswith("DEPTH"):
             return "depth"
         elif model_name.value.endswith("SCHNELL"):
+            return "base"
+        elif model_name.value.endswith("KONTEXT"):
+            return "base"
+        elif model_name.value.endswith("BASE"):
             return "base"
         else:
             return "base"

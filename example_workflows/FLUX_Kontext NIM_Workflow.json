@@ -1,0 +1,464 @@
+{
+  "id": "b4e84106-0201-477e-aad3-76c583ad2881",
+  "revision": 0,
+  "last_node_id": 22,
+  "last_link_id": 42,
+  "nodes": [
+    {
+      "id": 22,
+      "type": "GetImageSize",
+      "pos": [
+        1230.625,
+        269.1107482910156
+      ],
+      "size": [
+        140,
+        124.00001525878906
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 32
+        }
+      ],
+      "outputs": [
+        {
+          "name": "width",
+          "type": "INT",
+          "links": [
+            40
+          ]
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": [
+            41
+          ]
+        },
+        {
+          "name": "batch_size",
+          "type": "INT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.49",
+        "Node name for S&R": "GetImageSize"
+      },
+      "widgets_values": [
+        "width: 1024, height: 1024\n batch size: 1"
+      ]
+    },
+    {
+      "id": 1,
+      "type": "SaveImage",
+      "pos": [
+        1659.0059814453125,
+        50.95421600341797
+      ],
+      "size": [
+        967.582275390625,
+        733.849853515625
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 29
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.27"
+      },
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 21,
+      "type": "NIMFLUXNode",
+      "pos": [
+        1394.3636474609375,
+        71.12503051757812
+      ],
+      "size": [
+        215.24728393554688,
+        312.634521484375
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "is_nim_started",
+          "type": "STRING",
+          "link": 25
+        },
+        {
+          "name": "image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 42
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 40
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 41
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            29
+          ]
+        }
+      ],
+      "properties": {
+        "aux_id": "Comfy-Org/NIMnodes",
+        "ver": "9fa2fd99b57a1cf9c75b6152904e122984818101",
+        "Node name for S&R": "NIMFLUXNode"
+      },
+      "widgets_values": [
+        896,
+        896,
+        "remove the tables and chairs",
+        2.5,
+        2289866906,
+        "randomize",
+        20
+      ]
+    },
+    {
+      "id": 16,
+      "type": "FluxKontextImageScale",
+      "pos": [
+        1029.758056640625,
+        277.9956970214844
+      ],
+      "size": [
+        187.75448608398438,
+        26
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 37
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            32
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.49",
+        "Node name for S&R": "FluxKontextImageScale"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 8,
+      "type": "Get_HFToken",
+      "pos": [
+        798.5770874023438,
+        -11.662866592407227
+      ],
+      "size": [
+        226.79998779296875,
+        26
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "hf_token",
+          "type": "STRING",
+          "links": [
+            12
+          ]
+        }
+      ],
+      "properties": {
+        "aux_id": "comfyui_nim",
+        "ver": "5048deba71359baf23904966b5436dfe42b0ae97",
+        "Node name for S&R": "Get_HFToken"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 6,
+      "type": "LoadNIMNode",
+      "pos": [
+        1034.1595458984375,
+        70.42670440673828
+      ],
+      "size": [
+        329.5755920410156,
+        154
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "is_nim_installed",
+          "type": "BOOLEAN",
+          "link": 7
+        },
+        {
+          "name": "hf_token",
+          "type": "STRING",
+          "widget": {
+            "name": "hf_token"
+          },
+          "link": 12
+        }
+      ],
+      "outputs": [
+        {
+          "name": "is_nim_started",
+          "type": "STRING",
+          "links": [
+            25
+          ]
+        }
+      ],
+      "properties": {
+        "aux_id": "comfyui_nim",
+        "ver": "5048deba71359baf23904966b5436dfe42b0ae97",
+        "Node name for S&R": "LoadNIMNode"
+      },
+      "widgets_values": [
+        "FLUX_KONTEXT",
+        "Start",
+        "Default",
+        "Input HF Token"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "InstallNIMNode",
+      "pos": [
+        796.7014770507812,
+        64.37979125976562
+      ],
+      "size": [
+        223.8599853515625,
+        30.6200008392334
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "is_nim_installed",
+          "type": "BOOLEAN",
+          "slot_index": 0,
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "aux_id": "comfyui_nim",
+        "ver": "5048deba71359baf23904966b5436dfe42b0ae97",
+        "Node name for S&R": "InstallNIMNode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 11,
+      "type": "LoadImage",
+      "pos": [
+        734.50341796875,
+        208.24481201171875
+      ],
+      "size": [
+        274.080078125,
+        314.0000305175781
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            37,
+            42
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.49",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "input.jpg",
+        "image"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "MarkdownNote",
+      "pos": [
+        1067.6282958984375,
+        467.316650390625
+      ],
+      "size": [
+        377.3333740234375,
+        154.66668701171875
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "LICENSE AGREEMENT",
+      "properties": {},
+      "widgets_values": [
+        "***LICENSE AGREEMENT***\n\nBy clicking Run button, you agree to the terms governing the NIMs you have chosen: [https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev/blob/main/LICENSE.md](https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev/blob/main/LICENSE.md)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    }
+  ],
+  "links": [
+    [
+      7,
+      4,
+      0,
+      6,
+      0,
+      "BOOLEAN"
+    ],
+    [
+      12,
+      8,
+      0,
+      6,
+      1,
+      "STRING"
+    ],
+    [
+      25,
+      6,
+      0,
+      21,
+      0,
+      "STRING"
+    ],
+    [
+      29,
+      21,
+      0,
+      1,
+      0,
+      "IMAGE"
+    ],
+    [
+      32,
+      16,
+      0,
+      22,
+      0,
+      "IMAGE"
+    ],
+    [
+      37,
+      11,
+      0,
+      16,
+      0,
+      "IMAGE"
+    ],
+    [
+      40,
+      22,
+      0,
+      21,
+      2,
+      "INT"
+    ],
+    [
+      41,
+      22,
+      1,
+      21,
+      3,
+      "INT"
+    ],
+    [
+      42,
+      11,
+      0,
+      21,
+      1,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 1.610510000000001,
+      "offset": [
+        -571.3150585514534,
+        56.14437968806355
+      ]
+    },
+    "ue_links": [],
+    "frontendVersion": "1.23.4",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "version": 0.4
+}

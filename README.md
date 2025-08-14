@@ -1,14 +1,17 @@
-# NVIDIA FLUX NIM
+# NVIDIA NIM Nodes
 
-### What is the FLUX NIM?
+### What are NIMs?
 
-The FLUX NIM is an NVIDIA Microservices container designed to run Black Forest Lab's FLUX models in the most optimal manner. This NIM provides support for the following models from Black Forest Lab's:  Flux.1 dev, Flux.1-Depth-dev, Flux.1-Canny-dev, and Flux.1-Schnell. 
+The NIMs is an NVIDIA Microservices container designed to run  models in the most optimal manner. This NIM provides support for the following models from Black Forest Lab's:  Flux.1 dev, Flux.1-Depth-dev, Flux.1-Canny-dev,Flux.1-Schnell, and Flux.1-Kontext-Dev. 
+
+Experimental support is also provided for Stability AI SD3.5 Large, SD3.5 Large-controlnet-canny, and SD3.5 Large-controlnet-depth on GPUs with 32GB or more VRAM.
 
 ## Getting Started with the FLUX NIM in ComfyUI
 
 Before installing, ensure your system meets the following requirements:  
 Operating System: Windows 11 (22H1 or later)  
-GPU: RTX 5090, RTX 5080, RTX 4090, RTX 4090 Laptop, RTX 4080, RTX 6000 Ada 
+GPU Compatibility information can be found here: [NVIDIA NIM for Visual Generative AI (GenAI) GPU Support Matrix](https://docs.nvidia.com/nim/visual-genai/1.2.0/support-matrix.html#black-forest-labs-flux-1-kontext-dev)
+
 GPU Driver: Version 572.83 or later  
 Virtualization Settings: Enabled in SBIOS - [Instructions to enable virtualization if it is not enabled](https://support.microsoft.com/en-gb/windows/enable-virtualization-on-windows-c5578302-6e43-4b4b-a449-8ced115f58e1)
 
@@ -18,9 +21,9 @@ However it is recommended to installer from [here](https://assets.ngc.nvidia.com
 
 After the NIM setup has completed, please perform the following steps to start NIMs in Comfy UI:
 
-1. Install ComfyUI following [this](https://github.com/comfyanonymous/ComfyUI?tab=readme-ov-file#installing) note the special instructions for installing for NVIDIA 50-Series (Blackwell) and prepare the running enviorment for ComfyUI
+1. Install ComfyUI
 2. Open ComfyUI folder, clone this repo and put it under `...\ComfyUI\custom_nodes\`
-3. Go to `...\ComfyUI\custom_nodes\comfyui_nim\`and install dependency with `pip install -r requirements.txt`
+3. Go to `...\ComfyUI\custom_nodes\NIMNodes\`and install the dependencies with the following command: `pip install -r requirements.txt`
 4. If using the windows standalone ComfyUI install use this command `..\..\..\python_embeded\python -m pip install -r requirements.txt`
 5. A HuggingFace API token is required to access the Flux models. For information on how to create an access token see [here](https://huggingface.co/docs/hub/en/security-tokens)
 6. To avoid having to input your token into the NIM everytime you can set the HF_TOKEN environment variable.
@@ -33,16 +36,20 @@ Navigate to: [https://huggingface.co/black-forest-labs/FLUX.1-dev](https://huggi
 ![image](https://github.com/user-attachments/assets/73206800-87cc-4bdf-a4bd-c0dde8730161)
 Accept the license agreement.
 
-Repeat this step for the following FLUX model variants:
+Repeat this step for the following model variants you wish to utilize:
 | Model      |URL |
 | ----------- | ----------- |
 | FLUX.1-Canny-dev      | [https://huggingface.co/black-forest-labs/FLUX.1-Canny-dev](https://huggingface.co/black-forest-labs/FLUX.1-Canny-dev) |
 | FLUX.1-Depth-dev      | [https://huggingface.co/black-forest-labs/FLUX.1-Depth-dev](https://huggingface.co/black-forest-labs/FLUX.1-Depth-dev) |
 | FLUX.1-schnell        | [https://huggingface.co/black-forest-labs/FLUX.1-schnell](https://huggingface.co/black-forest-labs/FLUX.1-schnell) |
+| FLUX.1-kontext-dev    | [https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev](https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev) |
 | FLUX.1-dev-onnx       | [https://huggingface.co/black-forest-labs/FLUX.1-dev-onnx](https://huggingface.co/black-forest-labs/FLUX.1-dev-onnx) |
 | FLUX.1-Canny-dev-onnx | [https://huggingface.co/black-forest-labs/FLUX.1-Canny-dev-onnx](https://huggingface.co/black-forest-labs/FLUX.1-Canny-dev-onnx) |
 | FLUX.1-Depth-dev-onnx | [https://huggingface.co/black-forest-labs/FLUX.1-Depth-dev-onnx](https://huggingface.co/black-forest-labs/FLUX.1-Depth-dev-onnx) |
 | FLUX.1-schnell        | [https://huggingface.co/black-forest-labs/FLUX.1-schnell-onnx](https://huggingface.co/black-forest-labs/FLUX.1-schnell-onnx) |
+| FLUX.1-kontext-dev-onnx    | [https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev-onnx](https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev-onnx) |
+| FLUX.1-kontext-dev-onnx    | [https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev-onnx](https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev-onnx) |
+| SD 3.5 Large    | [https://huggingface.co/stabilityai/stable-diffusion-3.5-large](https://huggingface.co/stabilityai/stable-diffusion-3.5-large) |
 
 ## Start ComfyUI
 1. Run ComfyUI APP with `python main.py` under `...\ComfyUI\`
@@ -100,13 +107,13 @@ The **NIM FLUX NODE** allows the user to configure the options used by the FLUX 
 
 Inputs:
 
-*image*: When the FLUX Canny or FLUX Depth models are used, an image needs to be used to guide the image output. The Image input takes regular images as input and will be converted to *Depth* or *Canny* images within the NIM. 
+*image*: When the FLUX Canny, FLUX Depth or FLUX Kontext models are used, an image needs to be used to guide the image output. The Image input takes regular images as input. When using Depth or Canny the input image be converted to *Depth* or *Canny* images within the NIM. 
 
 *is_nim_started*: This input takes the output from the **is_nim_started** output from the *Load NIM Node*.
 
-*width*: The image width. Valid ranges are "768", "832", "896", "960", "1024", "1088", "1152", "1216", "1280", "1344"
+*width*: The image width. Valid ranges are [672, 704, 736, 768, 800, 832, 864, 896, 928, 960, 992, 1024, 1056, 1088 ,1120, 1152, 1184, 1216, 1248, 1280, 1312, 1344, 1376, 1408, 1440, 1472, 1504, 1536, 1568]
 
-*height*: The image height. Valid ranges are "768", "832", "896", "960", "1024", "1088", "1152", "1216", "1280", "1344"
+*height*: The image height. Valid ranges are [672, 704, 736, 768, 800, 832, 864, 896, 928, 960, 992, 1024, 1056, 1088 ,1120, 1152, 1184, 1216, 1248, 1280, 1312, 1344, 1376, 1408, 1440, 1472, 1504, 1536, 1568]
 
 *prompt*: The text description of the desired image output
 
@@ -133,3 +140,7 @@ NONE
 Output:
 
 *hf_token*: Outputs the contents of the HF_TOKEN environment variable, will generate a failure if the environment variable does not exist.
+
+## FLUX.1 Kontext Dev
+The FLUX Kontext model has specific image generation ratio/resolutions which must be used. To make sure that the input image matches these ratio/resolutions the output of the input image should be passed into a FluxKontextImageScale node which will automatically scale the input image to a supported size, by feeding the output of this node into a GetImageSize node, we can use these values as inputs for the FLUX NIM Node Height and Width values to make sure they will work properly with FLUX Kontext.
+![flux_kontext_dev nim workflow](assets/Flux.1_kontext_dev_NIM.png)

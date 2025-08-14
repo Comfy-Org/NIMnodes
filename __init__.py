@@ -13,7 +13,6 @@ from typing import Dict, Tuple
 from .install import download_installer, run_installer
 from .nim import ModelType, NIMManager, OffloadingPolicy
 
-
 manager = NIMManager()
 
 class NIMFLUXNode:
@@ -25,12 +24,20 @@ class NIMFLUXNode:
         return {
             "required": {
                 "is_nim_started": ("STRING", {"forceInput": True}),
-                "width": (["768", "832", "896", "960", "1024", "1088", "1152", "1216", "1280", "1344"], {  # noqa: E501
-                    "default": "1024",
+                "width": ("INT", {
+                    "default": 1024,
+                    "min": 672,
+                    "max": 1568,
+                    "step": 1,
+                    "display": "number",
                     "tooltip": "Width of the image to generate, in pixels."
                 }),
-                "height": (["768", "832", "896", "960", "1024", "1088", "1152", "1216", "1280", "1344"], {
-                    "default": "1024",
+                "height": ("INT", {
+                    "default": 1024,
+                    "min": 672,
+                    "max": 1568,
+                    "step": 1,
+                    "display": "number",
                     "tooltip": "Height of the image to generate, in pixels."
                 }),
                 "prompt": ("STRING", {
@@ -63,7 +70,7 @@ class NIMFLUXNode:
                 }),
             },
             "optional": {
-                "image": ("IMAGE", {"tooltip": "The image used for depth and canny mode."}),
+                "image": ("IMAGE", {"tooltip": "The image used for depth, canny & kontext mode."}),
             },
         }
 
@@ -71,21 +78,28 @@ class NIMFLUXNode:
     FUNCTION = "generate"
     CATEGORY = "NVIDIA/NIM"
 
-
     def generate(self, width, height, prompt, cfg_scale, seed, steps, is_nim_started, image=None):
+        # Validate that width and height are divisible by 32
+        error_messages = []
+        """ if width % 32 != 0:
+            error_messages.append(f"Width ({width}) must be divisible by 32.")
+        if height % 32 != 0:
+            error_messages.append(f"Height ({height}) must be divisible by 32.")
+        if error_messages:
+            raise ValueError(" ".join(error_messages)) """
+
         if is_nim_started[0] == "":
             raise Exception("Please make sure use 'Load NIM' before this node to start NIM.")
         model_name = ModelType[is_nim_started[0]]
         port = manager.get_port(model_name)
         invoke_url = f"http://localhost:{port}/v1/infer"
 
-        #mode = model_name.value.split("_")[-1].lower().replace("dev", "base")
         mode = NIMManager._get_variant(self, model_name)
 
         if model_name.value.split('_')[-1].lower() == 'schnell':
             cfg_scale = 0
             if steps > 4:
-                raise Exception ("Flux Schnell step value must be between 1-4 steps")
+                raise Exception("Flux Schnell step value must be between 1-4 steps")
     
         payload = {
             "width": int(width),
@@ -101,11 +115,11 @@ class NIMFLUXNode:
             "steps": steps
         }
         
-        print(payload)
+        print(f'Payload is: payload {payload}')
         
-        if mode != "base":
+        if model_name.value.split('_')[-1].lower() not in ['schnell', 'dev', 'base']:
             if image is None:
-                raise Exception("Please use load image node to select image input for FLUX depth and canny mode.")
+                raise Exception("Please use load image node to select image input for FLUX depth, canny and kontext modes.")
         
             def _comfy_image_to_bytes(img: torch.tensor, depth: int = 8):
                 max_val = 2**depth - 1
@@ -273,6 +287,6 @@ NODE_CLASS_MAPPINGS = {
 NODE_DISPLAY_NAME_MAPPINGS = {
     "LoadNIMNode": "Load NIM",
     "InstallNIMNode": "Install NIM",
-    "NIMFLUXNode": "NIM FLUX",
+    "NIMFLUXNode": "NIM Generate",
     "Get_HFToken": "Use HF_TOKEN EnVar"
 }
