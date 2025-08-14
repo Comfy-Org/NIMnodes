@@ -2,7 +2,7 @@
 
 ### What are NIMs?
 
-The NIMs is an NVIDIA Microservices container designed to run  models in the most optimal manner. This NIM provides support for the following models from Black Forest Lab's:  Flux.1 dev, Flux.1-Depth-dev, Flux.1-Canny-dev,Flux.1-Schnell, and Flux.1-Kontext-Dev. 
+NIMs are a NVIDIA Microservices container designed to run models in the most optimal manner for NVIDIA GPUs. This NIM provides support for the following models from Black Forest Lab's:  Flux.1 dev, Flux.1-Depth-dev, Flux.1-Canny-dev,Flux.1-Schnell, and Flux.1-Kontext-Dev. 
 
 Experimental support is also provided for Stability AI SD3.5 Large, SD3.5 Large-controlnet-canny, and SD3.5 Large-controlnet-depth on GPUs with 32GB or more VRAM.
 
