@@ -5,6 +5,17 @@ description = "Provides nodes to utilise NVIDIA NIM, a set of accelerated infere
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = ["requests>=2.32.3", "ruff>=0.8.2"]
+license = { file = "LICENSE" }
+
+
+[project.urls]
+Repository = "https://github.com/Comfy-Org/NIMnodes"
+
+#  Used by Comfy Registry https://registry.comfy.org
+[tool.comfy]
+PublisherId = "comfyorg"
+DisplayName = "NIM-Nodes"
+Icon = ""
 
 [tool.ruff.lint]
 select = [
