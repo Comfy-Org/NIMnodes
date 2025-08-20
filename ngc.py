@@ -130,7 +130,7 @@ def get_ngc_key_from_device_info(deviceInfo):
 
     ngcKeyServiceUrl = 'https://nts.ngc.nvidia.com/v1/token'
     payload = {
-        "client_id": "examplepy",
+        "client_id": "comfyui",
         "pdi": deviceInfo[0].get('pdi', 'Unknown') if deviceInfo else 'Unknown',
         "access_policy_name": "nim-dev",
         "device": deviceInfo[0] if deviceInfo else {}
